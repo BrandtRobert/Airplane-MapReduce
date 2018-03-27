@@ -11,6 +11,10 @@ public class MinimizeDelayMapper extends Mapper<LongWritable, Text, Text, IntWri
 	public void map(LongWritable key, Text value, Context context) {
 		try {
 			String lineSplits [] = value.toString().split(",");
+			// If you got the first line in the file return, nothing can be done with it
+			if (lineSplits[0].equals("Year")) {
+				return;
+			}
 			String month = "M-" + lineSplits[3];
 			String dayOfWeek = "D-" + lineSplits[5];
 			String timeOfDay = "T-" + lineSplits[6];	// We will use depature time for time of day

@@ -21,6 +21,7 @@ public class MinimizeDelayJob {
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(IntWritable.class);
 			// Reducer
+			job.setPartitionerClass(MinimizeDelayPartitioner.class);
 			job.setReducerClass(MinimizeDelayReducer.class);
 			job.setOutputKeyClass(Text.class);
             job.setOutputValueClass(IntWritable.class);

@@ -12,7 +12,7 @@ public class MinimizeDelayMapper extends Mapper<LongWritable, Text, Text, IntWri
 		try {
 			String lineSplits [] = value.toString().split(",");
 			// If you got the first line in the file return, nothing can be done with it
-			if (lineSplits[0].equals("Year")) {
+			if (lineSplits[0].equals("Year") || lineSplits.length < 29) {
 				return;
 			}
 			String month = "M-" + lineSplits[3];
@@ -21,7 +21,11 @@ public class MinimizeDelayMapper extends Mapper<LongWritable, Text, Text, IntWri
 			// Delays start at index 23
 			int delayTime = 0;
 			for (int i = 25; i < 29; i++) {
-				delayTime += Integer.parseInt(lineSplits[i]);
+				try {
+					delayTime += Integer.parseInt(lineSplits[i]);	// Some records use 'NA' instead of 0
+				} catch (NumberFormatException e) {
+					delayTime += 0;
+				}
 			}
 			IntWritable isDelayed = (delayTime > 0) ? new IntWritable (1) : new IntWritable(0);
 			context.write(new Text(month), isDelayed);

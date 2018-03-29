@@ -15,7 +15,7 @@ public class MinimizeDelayMapper extends Mapper<LongWritable, Text, Text, IntWri
 			if (lineSplits[0].equals("Year") || lineSplits.length < 29) {
 				return;
 			}
-			String month = "M-" + lineSplits[1];
+			String month = String.format("M-%02d", Integer.parseInt(lineSplits[1]));
 			String dayOfWeek = "D-" + lineSplits[3];
 			// We will use depature time for time of day, pad to 4 places
 			String timeOfDay = String.format("T-%04d", Integer.parseInt(lineSplits[5]));

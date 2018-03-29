@@ -1,4 +1,4 @@
-package cs455.hadoop.mapreduce.minimizedelay;
+package cs455.hadoop.mapreduce.busiestairports;
 
 import java.io.IOException;
 
@@ -15,14 +15,13 @@ public class BusiestAirportsJob {
 			Configuration conf = new Configuration();
 			Job job = Job.getInstance(conf, "BusiestAiports");
 			// Job
-			job.setJarByClass(MinimizeDelayJob.class);
+			job.setJarByClass(BusiestAirportsJob.class);
 			// Mapper
-			job.setMapperClass(MinimizeDelayMapper.class);
+			job.setMapperClass(BusiestAirportsMapper.class);
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(IntWritable.class);
 			// Reducer
-			job.setPartitionerClass(MinimizeDelayPartitioner.class);
-			job.setReducerClass(MinimizeDelayReducer.class);
+			job.setReducerClass(BusiestAirportsReducer.class);
 			job.setOutputKeyClass(Text.class);
             job.setOutputValueClass(IntWritable.class);
             job.setNumReduceTasks(3);

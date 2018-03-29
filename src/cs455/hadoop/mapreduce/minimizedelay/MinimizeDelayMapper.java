@@ -21,6 +21,10 @@ public class MinimizeDelayMapper extends Mapper<LongWritable, Text, Text, IntWri
 			String timeOfDay = String.format("T-%04d", Integer.parseInt(lineSplits[5]));
 			// Only use the hour
 			timeOfDay = timeOfDay.substring(0,4);
+			// midnight '24' and hour '00' are the same thing
+			if (timeOfDay.equals("T-24")) {
+				timeOfDay = "T-00";
+			}
 			// Delays start at index 23
 			int delayTime = 0;
 			for (int i = 25; i < 29; i++) {

@@ -12,7 +12,9 @@ public class MinimizeDelayReducer extends Reducer <Text, IntWritable, Text, IntW
 			for (IntWritable val : delays) {
 				count += val.get();
 			}
-			context.write(key, new IntWritable(count));
+			// Trim off the M-, D-, or T- prefix
+			Text trimKey = new Text(key.toString().substring(2));
+			context.write(trimKey, new IntWritable(count));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

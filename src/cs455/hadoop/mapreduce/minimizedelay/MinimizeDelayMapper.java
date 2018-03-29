@@ -20,7 +20,7 @@ public class MinimizeDelayMapper extends Mapper<LongWritable, Text, Text, IntWri
 			// We will use depature time for time of day, pad to 4 places
 			String timeOfDay = String.format("T-%04d", Integer.parseInt(lineSplits[5]));
 			// Only use the hour
-			timeOfDay = timeOfDay.substring(0,2);
+			timeOfDay = timeOfDay.substring(0,4);
 			// Delays start at index 23
 			int delayTime = 0;
 			for (int i = 25; i < 29; i++) {

@@ -111,10 +111,10 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 		// Count up the values for every city year combination
 		for (Text year : years) {
 			CityYearCombo mapKey = new CityYearCombo(city.toString(), year.toString());
-			MutableInt value = cityYearCounts.get(mapKey);
-			if (value == null) {
+			if (!cityYearCounts.containsKey(mapKey)) {
 				cityYearCounts.put(mapKey, new MutableInt());
 			} else {
+				MutableInt value = cityYearCounts.get(mapKey);
 				value.increment();
 			}
 		}

@@ -25,8 +25,8 @@
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
     <!-- cs455.hadoop.mapreduce.**.*.java -->
-      <javac srcdir="${src}/**/**/**/**/*.java" destdir="${build}" classpathref="build.classpath" debug="true"
-             debuglevel="lines,vars,source" includeantruntime="false"/>
+      <javac srcdir="${src}" destdir="${build}" classpathref="build.classpath" debug="true"
+             debuglevel="lines,vars,source" includeantruntime="false" includes="${src}/**/**/**/**/*.java"/>
   </target>
 
   <target name="dist" depends="compile"

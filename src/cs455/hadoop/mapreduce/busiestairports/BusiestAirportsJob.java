@@ -24,7 +24,6 @@ public class BusiestAirportsJob {
 			job.setReducerClass(BusiestAirportsReducer.class);
 			job.setOutputKeyClass(Text.class);
             job.setOutputValueClass(IntWritable.class);
-            job.setNumReduceTasks(3);
             // path to input in HDFS
             FileInputFormat.addInputPath(job, new Path(args[0]));
             // path to output in HDFS
@@ -32,13 +31,10 @@ public class BusiestAirportsJob {
             // Block until the job is completed.
             System.exit(job.waitForCompletion(true) ? 0 : 1);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

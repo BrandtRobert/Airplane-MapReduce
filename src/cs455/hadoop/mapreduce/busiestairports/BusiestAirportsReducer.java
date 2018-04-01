@@ -109,6 +109,7 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 
 	public void reduce(Text city, Iterable<Text> years, Context context) {
 		// Count up the values for every city year combination
+		int count = 0;
 		for (Text year : years) {
 			CityYearCombo mapKey = new CityYearCombo(city.toString(), year.toString());
 			if (!cityYearCounts.containsKey(mapKey)) {
@@ -117,6 +118,14 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 				MutableInt value = cityYearCounts.get(mapKey);
 				value.increment();
 			}
+			count ++;
+		}
+		try {
+			context.write(new Text("Year Count"), new IntWritable(count));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 

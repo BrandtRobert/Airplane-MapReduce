@@ -124,10 +124,11 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 		try {
 			TreeSet<CityYearFlights> sortedSet = new TreeSet<CityYearFlights>();
 			Set<CityYearCombo> keyset = cityYearCounts.keySet();
-			context.write(new Text("Test"), new IntWritable(1));
+			context.write(new Text("Keyset Size"), new IntWritable(keyset.size()));
 			for (int currentYear = 1987; currentYear <= 2008; currentYear++) {
 				for (CityYearCombo key : keyset) {
 					if (key.year == currentYear) {
+						context.write(new Text("Key Match"), new IntWritable(0));
 						int fCount = cityYearCounts.get(key).get();
 						CityYearFlights c = new CityYearFlights(fCount, key.city, key.year);
 						sortedSet.add(c);

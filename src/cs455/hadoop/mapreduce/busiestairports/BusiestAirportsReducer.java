@@ -135,6 +135,7 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 					}
 				}
 			}
+			context.write(new Text("Sorted Set Size"), new IntWritable(sortedSet.size()));
 			for (CityYearFlights c : sortedSet) {
 				String keyOut = c.year + "-" + c.city;
 				try {

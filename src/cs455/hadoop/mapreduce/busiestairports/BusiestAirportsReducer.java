@@ -11,9 +11,9 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritable> {
-	
+
 	private final Map<CityYearCombo, MutableInt> cityYearCounts = new TreeMap<CityYearCombo, MutableInt>();
-	
+
 	// Credit to: gregory
 	// https://stackoverflow.com/questions/81346/most-efficient-way-to-increment-a-map-value-in-java
 	private class MutableInt {
@@ -25,11 +25,11 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 			return value;
 		}
 	}
-	
+
 	private class CityYearCombo {
 		final String city;
 		final int year;
-		
+
 		public CityYearCombo(String c, String y) {
 			city = c;
 			year = Integer.parseInt(y);
@@ -89,7 +89,7 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 		final int flights;
 		final String city;
 		final int year;
-		
+
 		public CityYearFlights(int flights, String city, int year) {
 			this.flights = flights;
 			this.city = city;
@@ -104,9 +104,9 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 				return this.year - other.year;
 			}
 		}
-		
+
 	}
-	
+
 	public void reduce(Text city, Iterable<Text> years, Context context) {
 		// Count up the values for every city year combination
 		for (Text year : years) {
@@ -119,34 +119,34 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 			}
 		}
 	}
-	
+
 	public void cleanup(Context context) {
-		TreeSet<CityYearFlights> sortedSet = new TreeSet<CityYearFlights>();
-		Set<CityYearCombo> keyset = cityYearCounts.keySet();
-		context.write(new Text("Test"), new IntWritable(1));
-		for (int currentYear = 1987; currentYear <= 2008; currentYear++) {
-			for (CityYearCombo key : keyset) {
-				if (key.year == currentYear) {
-					int fCount = cityYearCounts.get(key).get();
-					CityYearFlights c = new CityYearFlights(fCount, key.city, key.year);
-					sortedSet.add(c);
-					if (sortedSet.size() > 10) {
-						sortedSet.remove(sortedSet.first());
+		try {
+			TreeSet<CityYearFlights> sortedSet = new TreeSet<CityYearFlights>();
+			Set<CityYearCombo> keyset = cityYearCounts.keySet();
+			context.write(new Text("Test"), new IntWritable(1));
+			for (int currentYear = 1987; currentYear <= 2008; currentYear++) {
+				for (CityYearCombo key : keyset) {
+					if (key.year == currentYear) {
+						int fCount = cityYearCounts.get(key).get();
+						CityYearFlights c = new CityYearFlights(fCount, key.city, key.year);
+						sortedSet.add(c);
+						if (sortedSet.size() > 10) {
+							sortedSet.remove(sortedSet.first());
+						}
 					}
 				}
-			}
-			context.write(new Text("Sorted Set Size"), new IntWritable(sortedSet.size()));
-			for (CityYearFlights c : sortedSet) {
-				String keyOut = c.year + "-" + c.city;
-				try {
+				context.write(new Text("Sorted Set Size"), new IntWritable(sortedSet.size()));
+				for (CityYearFlights c : sortedSet) {
+					String keyOut = c.year + "-" + c.city;
 					context.write(new Text(keyOut), new IntWritable(c.flights));
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
+				sortedSet.clear();
 			}
-			sortedSet.clear();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }

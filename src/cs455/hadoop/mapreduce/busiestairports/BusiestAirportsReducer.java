@@ -1,7 +1,7 @@
 package cs455.hadoop.mapreduce.busiestairports;
 
-import java.util.TreeMap;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;

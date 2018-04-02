@@ -12,7 +12,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritable> {
 
-	private final Map<CityYearCombo, MutableInt> cityYearCounts = new TreeMap<CityYearCombo, MutableInt>();
+	private final Map<CityYearCombo, MutableInt> cityYearCounts = new HashMap<CityYearCombo, MutableInt>();
 
 	// Credit to: gregory
 	// https://stackoverflow.com/questions/81346/most-efficient-way-to-increment-a-map-value-in-java
@@ -110,7 +110,6 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 	public void reduce(Text city, Iterable<Text> years, Context context) {
 		// Count up the values for every city year combination
 		try {
-			context.write(new Text("Reduce Called"), new IntWritable(0));
 			int count = 0;
 			for (Text year : years) {
 				CityYearCombo mapKey = new CityYearCombo(city.toString(), year.toString());
@@ -122,7 +121,6 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 				}
 				count ++;
 			}
-			context.write(new Text("Year Count"), new IntWritable(count));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -134,11 +132,9 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 		try {
 			TreeSet<CityYearFlights> sortedSet = new TreeSet<CityYearFlights>();
 			Set<CityYearCombo> keyset = cityYearCounts.keySet();
-			context.write(new Text("Keyset Size"), new IntWritable(keyset.size()));
 			for (int currentYear = 1987; currentYear <= 2008; currentYear++) {
 				for (CityYearCombo key : keyset) {
 					if (key.year == currentYear) {
-						context.write(new Text("Key Match"), new IntWritable(0));
 						int fCount = cityYearCounts.get(key).get();
 						CityYearFlights c = new CityYearFlights(fCount, key.city, key.year);
 						sortedSet.add(c);
@@ -147,7 +143,6 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 						}
 					}
 				}
-				context.write(new Text("Sorted Set Size"), new IntWritable(sortedSet.size()));
 				for (CityYearFlights c : sortedSet) {
 					String keyOut = c.year + "-" + c.city;
 					context.write(new Text(keyOut), new IntWritable(c.flights));

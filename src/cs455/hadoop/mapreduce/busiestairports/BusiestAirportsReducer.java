@@ -2,6 +2,7 @@ package cs455.hadoop.mapreduce.busiestairports;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -134,7 +135,9 @@ public class BusiestAirportsReducer extends Reducer<Text, Text, Text, IntWritabl
 						}
 					}
 				}
-				for (CityYearFlights c : sortedSet) {
+				Iterator<CityYearFlights> reverse = sortedSet.descendingIterator();
+				while (reverse.hasNext()) {
+					CityYearFlights c = reverse.next();
 					String keyOut = c.year + "-" + c.city;
 					context.write(new Text(keyOut), new IntWritable(c.flights));
 				}

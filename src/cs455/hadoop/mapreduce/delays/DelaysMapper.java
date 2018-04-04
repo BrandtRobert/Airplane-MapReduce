@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +20,17 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 	private final Map<String, String> tailNumToYear = new HashMap<String, String>();
 	private final Map<String, String> carrierToName = new HashMap<String, String>();
 	
-	private void readFileIntoMap(File input, Map<String, String> associate, int keyIndex, int valueIndex) {
+	private void readFileIntoMap(File input, Map<String, String> associate, int keyIndex, int valueIndex, Context context) {
 		int maxIndex = Math.max(keyIndex, valueIndex);
 		try {
 			BufferedReader inputReader = new BufferedReader(new FileReader(input));
 			String line;
 			while ((line = inputReader.readLine()) != null) {
+				try {
+					context.write(new Text("line"), new Text(line));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				String [] splits = line.split(",");
 				if (splits.length < maxIndex) {
 					continue;
@@ -48,9 +52,9 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 			File carriers = new File ("/data/supplementary/carriers.csv");
 			File planeData = new File ("/data/supplementary/plane-data.csv");
 			// Create maps from the supplementary files
-			readFileIntoMap(airports, airportToCity, 0, 2);
-			readFileIntoMap(carriers, carrierToName, 0, 1);
-			readFileIntoMap(planeData, tailNumToYear, 0, 8);
+			readFileIntoMap(airports, airportToCity, 0, 2, context);
+			readFileIntoMap(carriers, carrierToName, 0, 1, context);
+			readFileIntoMap(planeData, tailNumToYear, 0, 8, context);
 		}
 	}
 	
@@ -94,8 +98,7 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 			// Combine information into a csv
 			String csv = String.join(",", importantFields);
 			// City, paired with info for all flights from that city
-			// context.write(origin, new Text(csv));
-			context.write(new Text ("Map size"), new Text(tailNumToYear.size() + ""));
+			context.write(origin, new Text(csv));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

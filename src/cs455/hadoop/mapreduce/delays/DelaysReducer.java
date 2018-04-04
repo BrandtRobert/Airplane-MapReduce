@@ -26,7 +26,7 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 		}
 	}
 	
-	public void cleanUp(Context context) {
+	public void cleanup(Context context) {
 		try {
 			Map<String, String> delayStats = carrierTracker.getDelayStats();
 			context.write(new Text("DelayStats.size"), new Text(delayStats.size() + ""));

@@ -10,19 +10,18 @@ import org.apache.hadoop.mapreduce.Reducer;
 public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 	private final CarrierDelayTracker carrierTracker = new CarrierDelayTracker();
     // Year-0, Month-1, DofWeek-2, DepAct-3, DepSchd-4, ArrAct-5, ArrSchd-6,
-    // CarrCode-7, CarrName-8, Tail#-8, ManuYear-9, City-10, Dest-11, CarrDel-12, 
-    // WeaDel-13, NASDel-14, SecDel-15, LatDel-16
+    // CarrCode-7, CarrName-8, Tail#-9, ManuYear-10, City-11, Dest-12, CarrDel-13, 
+    // WeaDel-14, NASDel-15, SecDel-16, LatDel-17
 	public void reduce (Text airportCode, Iterable<Text> flightRecords, Context context) {
 		for (Text record : flightRecords) {
-			String [] splits = record.toString().split(",");
-//			int minutesDelayed = (splits[12].equals("NA")) ? 0 : Integer.parseInt(splits[12]);
-			int minutesDelayed;
-			try {
-				minutesDelayed = Integer.parseInt(splits[12]);
-			} catch (NumberFormatException e) {
-				minutesDelayed = 0;
-			}
-			carrierTracker.addDelay(splits[8], minutesDelayed);
+			// String [] splits = record.toString().split(",");
+			// int minutesDelayed;
+			// try {
+			// 	minutesDelayed = Integer.parseInt(splits[12]);
+			// } catch (NumberFormatException e) {
+			// 	minutesDelayed = 0;
+			// }
+			// carrierTracker.addDelay(splits[8], minutesDelayed);
 			try {
 				context.write(airportCode, record);
 			} catch (IOException e) {

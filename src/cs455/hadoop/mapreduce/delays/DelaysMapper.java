@@ -94,7 +94,8 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 			// Combine information into a csv
 			String csv = String.join(",", importantFields);
 			// City, paired with info for all flights from that city
-			context.write(origin, new Text(csv));
+			// context.write(origin, new Text(csv));
+			context.write(new Text ("Map size"), new Text(tailNumToYear.size() + ""));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

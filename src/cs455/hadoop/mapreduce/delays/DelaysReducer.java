@@ -22,6 +22,13 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 			 	minutesDelayed = 0;
 			 }
 			 carrierTracker.addDelay(splits[8], minutesDelayed);
+			 try {
+				context.write(new Text("Record"), record);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

@@ -43,14 +43,15 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 	
 	// Cache contains: airports.csv, carriers.csv, plane-data.csv 
 	public void setup(Context context) throws IOException {
-		URI[] localPaths = context.getCacheFiles();
-		File airports = new File (localPaths[0]);
-		File carriers = new File (localPaths[1]);
-		File planeData = new File (localPaths[2]);
-		// Create maps from the supplementary files
-		readFileIntoMap(airports, airportToCity, 0, 2);
-		readFileIntoMap(carriers, carrierToName, 0, 1);
-		readFileIntoMap(planeData, tailNumToYear, 0, 8);
+		if (context.getCacheFiles().length > 0) {
+			File airports = new File ("/data/supplementary/airports.csv");
+			File carriers = new File ("/data/supplementary/carriers.csv");
+			File planeData = new File ("/data/supplementary/plane-data.csv");
+			// Create maps from the supplementary files
+			readFileIntoMap(airports, airportToCity, 0, 2);
+			readFileIntoMap(carriers, carrierToName, 0, 1);
+			readFileIntoMap(planeData, tailNumToYear, 0, 8);
+		}
 	}
 	
 	public void map(LongWritable key, Text value, Context context) {

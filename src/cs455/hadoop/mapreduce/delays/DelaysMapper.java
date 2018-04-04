@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +50,15 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 	// Cache contains: airports.csv, carriers.csv, plane-data.csv 
 	public void setup(Context context) throws IOException {
 		if (context.getCacheFiles().length > 0) {
+			URI [] paths = context.getCacheFiles();
+			for (URI u : Arrays.asList(paths)) {
+				Text uri = new Text (u.toString());
+				try {
+					context.write(new Text("URI"), uri);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			String airports = new String ("/data/supplementary/airports.csv");
 			String carriers = new String ("/data/supplementary/carriers.csv");
 			String planeData = new String ("/data/supplementary/plane-data.csv");

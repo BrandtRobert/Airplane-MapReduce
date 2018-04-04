@@ -15,7 +15,13 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 	public void reduce (Text airportCode, Iterable<Text> flightRecords, Context context) {
 		for (Text record : flightRecords) {
 			String [] splits = record.toString().split(",");
-			int minutesDelayed = (splits[12].equals("NA")) ? 0 : Integer.parseInt(splits[12]);
+//			int minutesDelayed = (splits[12].equals("NA")) ? 0 : Integer.parseInt(splits[12]);
+			int minutesDelayed;
+			try {
+				minutesDelayed = Integer.parseInt(splits[12]);
+			} catch (NumberFormatException e) {
+				minutesDelayed = 0;
+			}
 			carrierTracker.addDelay(splits[8], minutesDelayed);
 		}
 	}

@@ -64,7 +64,7 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 		if (lineSplits[0].equals("Year") || lineSplits.length < 29) {
 			return;
 		}
-		try {
+//		try {
 			List<String> importantFields = new ArrayList<String>(15);
 			Text origin = new Text(lineSplits[16]); // Origin
 			// Associate data
@@ -98,11 +98,11 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 			// Combine information into a csv
 			String csv = String.join(",", importantFields);
 			// City, paired with info for all flights from that city
-			context.write(origin, new Text(csv));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//			context.write(origin, new Text(csv));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 	}
 }

@@ -1,17 +1,18 @@
 package cs455.hadoop.mapreduce.delays;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -22,10 +23,12 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 	private final Map<String, String> tailNumToYear = new HashMap<String, String>();
 	private final Map<String, String> carrierToName = new HashMap<String, String>();
 	
-	private void readFileIntoMap(String fname, Map<String, String> associate, int keyIndex, int valueIndex, Context context) {
+	private void readFileIntoMap(Path path, Map<String, String> associate, int keyIndex, int valueIndex, Context context) {
 		int maxIndex = Math.max(keyIndex, valueIndex);
 		try {
-			BufferedReader inputReader = new BufferedReader(new FileReader(fname));
+			// Retrieve the hadoop file system in order to open the file
+			FileSystem fs = FileSystem.get(new Configuration());
+			BufferedReader inputReader = new BufferedReader(new InputStreamReader(fs.open(path)));
 			String line;
 			while ((line = inputReader.readLine()) != null) {
 				try {
@@ -51,17 +54,9 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 	public void setup(Context context) throws IOException {
 		if (context.getCacheFiles().length > 0) {
 			URI [] paths = context.getCacheFiles();
-			for (URI u : Arrays.asList(paths)) {
-				Text uri = new Text (u.toString());
-				try {
-					context.write(new Text("URI"), uri);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			String airports = new String ("/data/supplementary/airports.csv");
-			String carriers = new String ("/data/supplementary/carriers.csv");
-			String planeData = new String ("/data/supplementary/plane-data.csv");
+			Path airports = new Path (paths[0]);
+			Path carriers = new Path (paths[1]);
+			Path planeData = new Path (paths[2]);
 			// Create maps from the supplementary files
 			readFileIntoMap(airports, airportToCity, 0, 2, context);
 			readFileIntoMap(carriers, carrierToName, 0, 1, context);

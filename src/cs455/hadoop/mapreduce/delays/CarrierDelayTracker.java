@@ -20,6 +20,9 @@ public class CarrierDelayTracker {
 	}
 	
 	public void addDelay(String carrier, int minutes) {
+		if (minutes == 0) {
+			return;
+		}
 		if (carriers.containsKey(carrier)) {
 			carriers.get(carrier).addDelay(minutes);
 		} else {

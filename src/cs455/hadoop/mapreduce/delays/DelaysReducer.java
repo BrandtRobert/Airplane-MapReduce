@@ -18,16 +18,16 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 		for (Text record : flightRecords) {
 			String[] splits = record.toString().split(",");
 			trackCarriers(splits);
-			trackAircraft(splits);
+			trackAircraft(splits, context);
 		}
 	}
 	
-	private void trackAircraft(String[] flightRecord) {
+	private void trackAircraft(String[] flightRecord, Context context) {
 		String entryYear = flightRecord[0];
 		String manufactureYear = flightRecord[10];
 		String carrierDelay = flightRecord[13];
 		String lateDelay = flightRecord[17];
-		aircraftTracker.addAircraftEntry(entryYear, manufactureYear, carrierDelay, lateDelay);
+		aircraftTracker.addAircraftEntry(entryYear, manufactureYear, carrierDelay, lateDelay, context);
 	}
 
 	private void trackCarriers(String[] flightRecord) {

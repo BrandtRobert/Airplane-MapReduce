@@ -3,7 +3,10 @@ package cs455.hadoop.mapreduce.delays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OlderAircraftTracker {
+import org.apache.hadoop.mapreduce.Reducer;
+
+
+public class OlderAircraftTracker extends Reducer {
 	private final Map<String, DelayEntry> aircraftMap;
 	
 	public OlderAircraftTracker() {
@@ -32,18 +35,19 @@ public class OlderAircraftTracker {
 		}
 	}
 	
-	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft) {
-		if (!isInt(manufactureYear) || !isInt(entryYear)) {
+	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft, Context context) {
+		if (manufactureYear.equals("NA") || manufactureYear.equals("None")) {
 			return;
 		}
 		int totalDelay = 0;
-		if (isInt(carrierDelay)) {
+		if (!carrierDelay.equals("NA")) {
 			totalDelay += Integer.parseInt(carrierDelay);
 		}
-		if (isInt(lateAircraft)) {
+		if (!lateAircraft.equals("NA")) {
 			totalDelay += Integer.parseInt(lateAircraft);
 		}
 		int age = Integer.parseInt(entryYear) - Integer.parseInt(manufactureYear);
+		
 		if (age > 20) {
 			aircraftMap.get("Old").addNewDelay(totalDelay);
 		} else {
@@ -56,14 +60,5 @@ public class OlderAircraftTracker {
 		delayMap.put("Old", aircraftMap.get("Old").getDelayStat());
 		delayMap.put("New", aircraftMap.get("New").getDelayStat());
 		return delayMap;
-	}
-	
-	private boolean isInt(String a) {
-		try {
-			Integer.parseInt(a);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
 	}
 }

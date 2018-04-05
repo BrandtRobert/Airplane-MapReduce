@@ -26,9 +26,8 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 					minutesDelayed = Math.max(minutesDelayed, 0);
 				}
 			 } catch (NumberFormatException e) {
-				 Text report = new Text( splits[5] + " " + splits[6] + " " + splits[13] );
 				 try {
-					context.write(new Text("Fields"), report);
+					context.write(new Text("Fields"), record);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					} catch (InterruptedException e1) {

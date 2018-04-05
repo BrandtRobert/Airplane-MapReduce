@@ -14,21 +14,21 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
     // WeaDel-14, NASDel-15, SecDel-16, LatDel-17
 	public void reduce (Text airportCode, Iterable<Text> flightRecords, Context context) {
 		for (Text record : flightRecords) {
-//			 String [] splits = record.toString().split(",");
-//			 int minutesDelayed;
-//			 try {
-//			 	minutesDelayed = Integer.parseInt(splits[12]);
-//			 } catch (NumberFormatException e) {
-//			 	minutesDelayed = 0;
-//			 }
-//			 carrierTracker.addDelay(splits[8], minutesDelayed);
+			 String [] splits = record.toString().split(",");
+			 int minutesDelayed;
 			 try {
-				context.write(airportCode, record);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			 	minutesDelayed = Integer.parseInt(splits[12]);
+			 } catch (NumberFormatException e) {
+			 	minutesDelayed = 0;
+			 }
+			 carrierTracker.addDelay(splits[8], minutesDelayed);
+			//  try {
+			// 	context.write(airportCode, record);
+			// } catch (IOException e) {
+			// 	e.printStackTrace();
+			// } catch (InterruptedException e) {
+			// 	e.printStackTrace();
+			// }
 		}
 	}
 	

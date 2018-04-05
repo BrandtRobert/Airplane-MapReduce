@@ -18,15 +18,15 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 			 int minutesDelayed;
 			 try {
 				// Prefer using the carrier delay field, if not available calculate arrival delay
-				if (!splits[12].equals("NA")) {
-					minutesDelayed = Integer.parseInt(splits[12]);
+				if (!splits[13].equals("NA")) {
+					minutesDelayed = Integer.parseInt(splits[13]);
 				} else {
 					minutesDelayed = Integer.parseInt(splits[5]) - Integer.parseInt(splits[6]);
 					// If the plane arrived before scheluded count it as 0 delay
 					minutesDelayed = Math.max(minutesDelayed, 0);
 				}
 			 } catch (NumberFormatException e) {
-				 Text report = new Text( splits[5] + " " + splits[6] + " " + splits[12] );
+				 Text report = new Text( splits[5] + " " + splits[6] + " " + splits[13] );
 				 try {
 					context.write(new Text("Fields"), report);
 					} catch (IOException e1) {

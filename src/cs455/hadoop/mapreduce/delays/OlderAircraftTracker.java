@@ -22,6 +22,14 @@ public class OlderAircraftTracker {
 				this.minutesDelayed += minutesDelayed;
 			}
 		}
+		
+		public double getAvgDelay() {
+			return (double) minutesDelayed / (double) totalDelays;
+		}
+		
+		public String getDelayStat() {
+			return totalDelays + " total delays,\t" + getAvgDelay() + " avg delay";
+		}
 	}
 	
 	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft) {
@@ -41,6 +49,13 @@ public class OlderAircraftTracker {
 		} else {
 			aircraftMap.get("New").addNewDelay(totalDelay);
 		}
+	}
+	
+	public Map<String, String> getDelays() {
+		Map<String, String> delayMap = new HashMap<String, String>();
+		delayMap.put("Old", aircraftMap.get("Old").getDelayStat());
+		delayMap.put("New", aircraftMap.get("New").getDelayStat());
+		return delayMap;
 	}
 	
 	private boolean isInt(String a) {

@@ -26,7 +26,15 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 					minutesDelayed = Math.max(minutesDelayed, 0);
 				}
 			 } catch (NumberFormatException e) {
-			 	minutesDelayed = 0;
+				 Text report = new Text( splits[5] + " " + splits[6] + " " + splits[12] );
+				 try {
+					context.write(new Text("Fields"), report);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+				 }
+				 minutesDelayed = 0;
 			 }
 			 carrierTracker.addDelay(splits[8], minutesDelayed);
 		}

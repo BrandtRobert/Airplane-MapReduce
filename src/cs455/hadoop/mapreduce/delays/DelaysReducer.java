@@ -17,25 +17,24 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 			 String [] splits = record.toString().split(",");
 			 int minutesDelayed;
 			 try {
-			 	minutesDelayed = Integer.parseInt(splits[12]);
+				// Prefer using the carrier delay field, if not available calculate arrival delay
+				if (!splits[12].equals("NA")) {
+					minutesDelayed = Integer.parseInt(splits[12]);
+				} else {
+					minutesDelayed = Integer.parseInt(splits[5]) - Integer.parseInt(splits[6]);
+					// If the plane arrived before scheluded count it as 0 delay
+					minutesDelayed = Math.max(minutesDelayed, 0);
+				}
 			 } catch (NumberFormatException e) {
 			 	minutesDelayed = 0;
 			 }
 			 carrierTracker.addDelay(splits[8], minutesDelayed);
-			//  try {
-			// 	context.write(airportCode, record);
-			// } catch (IOException e) {
-			// 	e.printStackTrace();
-			// } catch (InterruptedException e) {
-			// 	e.printStackTrace();
-			// }
 		}
 	}
 	
 	public void cleanup(Context context) {
 		try {
 			Map<String, String> delayStats = carrierTracker.getDelayStats();
-			context.write(new Text("DelayStats.size"), new Text(delayStats.size() + ""));
 			for (Entry<String, String> entry : delayStats.entrySet()) {
 				context.write(new Text(entry.getKey()), new Text (entry.getValue()));
 			}

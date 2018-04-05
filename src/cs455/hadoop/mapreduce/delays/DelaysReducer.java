@@ -23,7 +23,7 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 //			 }
 //			 carrierTracker.addDelay(splits[8], minutesDelayed);
 			 try {
-				context.write(new Text("Record"), record);
+				context.write(airportCode, record);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {

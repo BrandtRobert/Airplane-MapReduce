@@ -25,6 +25,9 @@ public class OlderAircraftTracker {
 	}
 	
 	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft) {
+		if (manufactureYear.equals("null")) {
+			return;
+		}
 		int totalDelay = 0;
 		if (isInt(carrierDelay)) {
 			totalDelay += Integer.parseInt(carrierDelay);

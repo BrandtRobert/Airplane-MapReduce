@@ -13,18 +13,23 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 	// CarrCode-7, CarrName-8, Tail#-9, ManuYear-10, City-11, Dest-12, CarrDel-13, 
 	// WeaDel-14, NASDel-15, SecDel-16, LatDel-17
 	public void reduce (Text airportCode, Iterable<Text> flightRecords, Context context) {
+		trackerCarriers(flightRecords);
+	}
+
+	private void trackerCarriers(Iterable<Text> flightRecords) {
 		for (Text record : flightRecords) {
 			String [] splits = record.toString().split(",");
 			int minutesDelayed;
 			try {
 				// Prefer using the carrier delay field, if not available calculate arrival delay
-				if (!splits[13].equals("NA")) {
-					minutesDelayed = Integer.parseInt(splits[13]);
-				} else {
-					minutesDelayed = Integer.parseInt(splits[5]) - Integer.parseInt(splits[6]);
-					// If the plane arrived before scheluded count it as 0 delay
-					minutesDelayed = Math.max(minutesDelayed, 0);
-				}
+				minutesDelayed = Integer.parseInt(splits[13]);
+				// if (!splits[13].equals("NA")) {
+				// 	minutesDelayed = Integer.parseInt(splits[13]);
+				// } else {
+				// 	minutesDelayed = Integer.parseInt(splits[5]) - Integer.parseInt(splits[6]);
+				// 	// If the plane arrived before scheluded count it as 0 delay
+				// 	minutesDelayed = Math.max(minutesDelayed, 0);
+				// }
 			} catch (NumberFormatException e) {
 				minutesDelayed = 0;
 			}

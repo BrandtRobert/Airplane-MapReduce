@@ -32,6 +32,8 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 			BufferedReader inputReader = new BufferedReader(new InputStreamReader(fs.open(path)));
 			String line;
 			while ((line = inputReader.readLine()) != null) {
+				// Remove quotes
+				line = line.replaceAll("\"", "");
 				String [] splits = line.split(",");
 				if (splits.length < maxIndex) {
 					continue;
@@ -58,14 +60,14 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 			readFileIntoMap(carriers, carrierToName, 0, 1, context);
 			readFileIntoMap(planeData, tailNumToYear, 0, 8, context);
 			
-			try {
-				context.write(new Text("Carriers Map"), new Text ("" + tailNumToYear.size()));
-				for (Entry<String, String> entry : carrierToName.entrySet()) {
-					context.write(new Text(entry.getKey()), new Text(entry.getValue()));
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			// try {
+			// 	context.write(new Text("Carriers Map"), new Text ("" + tailNumToYear.size()));
+			// 	for (Entry<String, String> entry : carrierToName.entrySet()) {
+			// 		context.write(new Text(entry.getKey()), new Text(entry.getValue()));
+			// 	}
+			// } catch (InterruptedException e) {
+			// 	e.printStackTrace();
+			// }
 		}
 	}
 	
@@ -75,7 +77,7 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 		if (lineSplits[0].equals("Year") || lineSplits.length < 29) {
 			return;
 		}
-//		 try {
+		 try {
 			List<String> importantFields = new ArrayList<String>(15);
 			Text origin = new Text(lineSplits[16]); // Origin
 			// Associate data
@@ -110,11 +112,11 @@ public class DelaysMapper extends Mapper<LongWritable, Text, Text, Text>  {
 			// String csv = String.join(",", importantFields);
 			String csv = manufactureYear + " " + city + " " + carrierName;
 			// City, paired with info for all flights from that city
-//		 	context.write(origin, new Text(csv));
-//		 } catch (IOException e) {
-//		 	e.printStackTrace();
-//		 } catch (InterruptedException e) {
-//		 	e.printStackTrace();
-//		 }
+		 	context.write(origin, new Text(csv));
+		 } catch (IOException e) {
+		 	e.printStackTrace();
+		 } catch (InterruptedException e) {
+		 	e.printStackTrace();
+		 }
 	}
 }

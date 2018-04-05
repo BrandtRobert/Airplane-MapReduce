@@ -33,7 +33,7 @@ public class OlderAircraftTracker {
 	}
 	
 	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft) {
-		if (manufactureYear.equals("null")) {
+		if (manufactureYear.equals("NA")) {
 			return;
 		}
 		int totalDelay = 0;

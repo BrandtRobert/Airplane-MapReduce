@@ -8,7 +8,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 
-public class OlderAircraftTracker extends Reducer<Text, Text, Text, Text> {
+public class OlderAircraftTracker {
 	private final Map<String, DelayEntry> aircraftMap;
 	
 	public OlderAircraftTracker() {
@@ -40,16 +40,7 @@ public class OlderAircraftTracker extends Reducer<Text, Text, Text, Text> {
 		}
 	}
 	
-	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft, Context context) {
-		// DO a context write
-		String data = entryYear + " " + manufactureYear + " " + carrierDelay + " " + lateAircraft;
-		try {
-			context.write(new Text("Aircraft"), new Text(data));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft) {
 		if (manufactureYear.equals("NA") || manufactureYear.equals("None")) {
 			return;
 		}

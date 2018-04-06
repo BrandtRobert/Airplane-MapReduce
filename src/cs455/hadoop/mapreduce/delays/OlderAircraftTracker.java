@@ -29,6 +29,9 @@ public class OlderAircraftTracker extends Reducer<Text, Text, Text, Text> {
 		}
 		
 		public double getAvgDelay() {
+			if (totalDelays == 0) {
+				return 0;
+			}
 			return (double) minutesDelayed / (double) totalDelays;
 		}
 		

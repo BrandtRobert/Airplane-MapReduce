@@ -52,10 +52,11 @@ public class DelaysReducer extends Reducer<Text, Text, Text, Text> {
 		MultipleOutputs<Text, Text> mos = new MultipleOutputs<Text, Text>(context);
 		try {
 			Map<String, String> delayStats = carrierTracker.getDelayStats();
+			context.write(new Text("Delay Stats Size"), new Text("" + delayStats.size()));
+			mos.write("CarriersOutput", new Text("Banana"), new Text("Banana"));
 			for (Entry<String, String> entry : delayStats.entrySet()) {
 				// This isn't writing for some reason
 				mos.write("CarriersOutput", new Text(entry.getKey()), new Text (entry.getValue()));
-				context.write(new Text(entry.getKey()), new Text (entry.getValue()));
 			}
 			Map<String, String> aircraftStats = aircraftTracker.getDelays();
 			for (Entry<String, String> entry : aircraftStats.entrySet()) {

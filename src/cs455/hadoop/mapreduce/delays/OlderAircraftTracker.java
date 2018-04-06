@@ -1,11 +1,7 @@
 package cs455.hadoop.mapreduce.delays;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Reducer;
 
 
 public class OlderAircraftTracker {

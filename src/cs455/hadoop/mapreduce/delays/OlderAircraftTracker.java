@@ -3,10 +3,11 @@ package cs455.hadoop.mapreduce.delays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 
-public class OlderAircraftTracker extends Reducer {
+public class OlderAircraftTracker extends Reducer<Text, Text, Text, Text> {
 	private final Map<String, DelayEntry> aircraftMap;
 	
 	public OlderAircraftTracker() {
@@ -36,6 +37,8 @@ public class OlderAircraftTracker extends Reducer {
 	}
 	
 	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft, Context context) {
+		// DO a context write
+		
 		if (manufactureYear.equals("NA") || manufactureYear.equals("None")) {
 			return;
 		}

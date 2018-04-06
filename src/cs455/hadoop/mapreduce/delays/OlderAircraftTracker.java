@@ -3,6 +3,7 @@ package cs455.hadoop.mapreduce.delays;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class OlderAircraftTracker {
 	private final Map<String, DelayEntry> aircraftMap;
 	
@@ -22,20 +23,32 @@ public class OlderAircraftTracker {
 				this.minutesDelayed += minutesDelayed;
 			}
 		}
+		
+		public double getAvgDelay() {
+			if (totalDelays == 0) {
+				return 0;
+			}
+			return (double) minutesDelayed / (double) totalDelays;
+		}
+		
+		public String getDelayStat() {
+			return totalDelays + " total delays,\t" + getAvgDelay() + " avg delay";
+		}
 	}
 	
 	public void addAircraftEntry(String entryYear, String manufactureYear, String carrierDelay, String lateAircraft) {
-		if (manufactureYear.equals("null")) {
+		if (manufactureYear.equals("NA") || manufactureYear.equals("None")) {
 			return;
 		}
 		int totalDelay = 0;
-		if (isInt(carrierDelay)) {
+		if (!carrierDelay.equals("NA")) {
 			totalDelay += Integer.parseInt(carrierDelay);
 		}
-		if (isInt(lateAircraft)) {
+		if (!lateAircraft.equals("NA")) {
 			totalDelay += Integer.parseInt(lateAircraft);
 		}
 		int age = Integer.parseInt(entryYear) - Integer.parseInt(manufactureYear);
+		
 		if (age > 20) {
 			aircraftMap.get("Old").addNewDelay(totalDelay);
 		} else {
@@ -43,12 +56,10 @@ public class OlderAircraftTracker {
 		}
 	}
 	
-	private boolean isInt(String a) {
-		try {
-			Integer.parseInt(a);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
+	public Map<String, String> getDelays() {
+		Map<String, String> delayMap = new HashMap<String, String>();
+		delayMap.put("Old", aircraftMap.get("Old").getDelayStat());
+		delayMap.put("New", aircraftMap.get("New").getDelayStat());
+		return delayMap;
 	}
 }

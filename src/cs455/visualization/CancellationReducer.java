@@ -13,6 +13,7 @@ public class CancellationReducer extends Reducer<Text, IntWritable, Text, IntWri
 		for (IntWritable can : cancellations) {
 			sum += can.get();
 		}
-		context.write(key, new IntWritable(sum));
+		Text newKey = new Text (key.toString().substring(2));
+		context.write(newKey, new IntWritable(sum));
 	}
 }

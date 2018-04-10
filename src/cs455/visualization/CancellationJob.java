@@ -24,6 +24,9 @@ public class CancellationJob {
 		job.setReducerClass(CancellationReducer.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
+		
+		job.setCombinerClass(CancellationReducer.class);
+		job.setPartitionerClass(CancellationPartitioner.class);
 		// Output Format
         // path to input in HDFS
         FileInputFormat.addInputPath(job, new Path(args[0]));

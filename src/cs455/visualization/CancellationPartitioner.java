@@ -11,7 +11,7 @@ public class CancellationPartitioner extends Partitioner<Text, IntWritable> {
 		String keyStr = key.toString();
 		if (numReduceTasks == 0) {
 			return 0;
-		} else if (keyStr.startsWith("D:")) {
+		} else if (keyStr.startsWith("R:")) {
 			return 0 % numReduceTasks;
 		} else if (keyStr.startsWith("C:")) {
 			return 1 % numReduceTasks;

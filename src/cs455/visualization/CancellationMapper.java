@@ -7,17 +7,17 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class CancellationMapper extends Mapper<LongWritable, Text, Text, Text> {
+public class CancellationMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 	
 	private final Map<String, String> airportToCity = new HashMap<String, String>();
 	private final Map<String, String> carrierToName = new HashMap<String, String>();
@@ -65,16 +65,9 @@ public class CancellationMapper extends Mapper<LongWritable, Text, Text, Text> {
 			return;
 		}
 		// Year, Carrier, City, Airport, Cancelled, Cancellation Reason, Destination, Month, Day of Week
-		String year = lineSplits[0];
 		String carrier = carrierToName.get(lineSplits[8]);
 		String airport = lineSplits[16];
 		String city = airportToCity.get(airport);
-		List<String> importantFields = new ArrayList<String>(9);
-		
-		importantFields.add(carrier);
-		importantFields.add(city);
-		importantFields.add(airport);
-		
 		String cancelled = lineSplits[21];
 		String reason;
 		switch (lineSplits[22]) {
@@ -93,15 +86,14 @@ public class CancellationMapper extends Mapper<LongWritable, Text, Text, Text> {
 			default:
 				reason = "NA";
 		}
-		
-		importantFields.add(cancelled);
-		importantFields.add(reason);
-		
-		importantFields.add(lineSplits[17]);		// Dest
-		importantFields.add(lineSplits[1]);			// Month
-		importantFields.add(lineSplits[3]);			// Day of the week
-		
-		String csv = String.join(",", importantFields);
-		context.write(new Text(year), new Text(csv));
+		// For counting cancellation reasons
+		IntWritable cancellInt = new IntWritable(Integer.parseInt(cancelled));
+		if (!reason.equals("NA")) {
+			context.write(new Text("R:" + reason), cancellInt);
+		}
+		// For Cities / cancellations
+		context.write(new Text("C:" + city), cancellInt);
+		// For Airlines / cancellations
+		context.write(new Text("A:" + carrier), cancellInt);
 	}
 }

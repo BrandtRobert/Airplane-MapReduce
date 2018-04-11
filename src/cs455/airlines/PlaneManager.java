@@ -45,6 +45,9 @@ public class PlaneManager {
 	
 	public Text oldPlaneData() {
 		// Old planes
+		if (oldPlaneData.equals("0")) {
+			return new Text("0");
+		}
 		String [] oldArr = oldPlaneData.split(",");
 		int numDelaysOld = Integer.parseInt(oldArr[1]);
 		int numMinutesOld  = Integer.parseInt(oldArr[0]);
@@ -56,6 +59,9 @@ public class PlaneManager {
 	
 	public Text newPlaneData() {
 		// New planes
+		if (newPlaneData.equals("0")) {
+			return new Text("0");
+		}
 		String [] newArr = newPlaneData.split(",");
 		int numDelaysNew = Integer.parseInt(newArr[1]);
 		int numMinutesNew  = Integer.parseInt(newArr[0]);

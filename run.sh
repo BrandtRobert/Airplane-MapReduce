@@ -1,5 +1,5 @@
 #!/bin/bash
-# cs455/hadoop/mapreduce/busiestairports/BusiestAirportsJob.class
+# Run Q1 - Q6
 hadoop jar ./dist/airportanalysis.jar \
 cs455.airlines.AirlinesJob \
 /data/main/ \

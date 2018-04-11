@@ -24,13 +24,16 @@ public class BusiestAirportManager {
 	@SuppressWarnings("unchecked")
 	public List<CityYearCountTriple> getTopTenByYear() {
 		// Each index in the list represents a year, while the maps are sorted by counts, with string being the city
-		TreeMap<MutableInt, String> [] topTenMaps = (TreeMap<MutableInt, String>[]) new TreeMap[22];
+		List<TreeMap<MutableInt, String>> topTenMaps = new ArrayList<TreeMap<MutableInt, String>>(22);
+		for (int i = 0; i < 23; i++) {
+			topTenMaps.set(i, new TreeMap<MutableInt, String>());
+		}
 		for (Entry<String, MutableInt> entry : cityYearToCount.entrySet()) {
 			String [] keyArr = entry.getKey().split("-");
 			String year = keyArr[0];
 			String city = keyArr[1];
 			int index = yearToIndex(year);
-			TreeMap<MutableInt, String> yearlyMap = topTenMaps[index];
+			TreeMap<MutableInt, String> yearlyMap = topTenMaps.get(index);
 			yearlyMap.put(entry.getValue(), city);
 			// Remove the 11th entry to get back to top ten, mostly for saving memory
 			if (yearlyMap.size() == 11) {
@@ -41,8 +44,7 @@ public class BusiestAirportManager {
 		List<CityYearCountTriple> returnList = new ArrayList<CityYearCountTriple>(10 * 22);
 		// Each map is another year, subsequently
 		int year = 1987;
-		for (int i = 0; i < 23; i++) {
-			TreeMap<MutableInt, String> map = topTenMaps[i];
+		for (TreeMap<MutableInt, String> map : topTenMaps) {
 			for (MutableInt key : map.descendingKeySet()) {
 				CityYearCountTriple c = new CityYearCountTriple();
 				c.city = map.get(key);

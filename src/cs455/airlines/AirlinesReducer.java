@@ -50,13 +50,22 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			break;
 		case "5":
 			context.write(keyTrimmed, combinedValue);
-			planeManager.addPlaneData(keyTrimmed.toString(), combinedValue.toString());
+			writePlaneDataWithAvg(keyTrimmed.toString(), combinedValue.toString(), context);
 			break;
 		case "6":
 			context.write(keyTrimmed, combinedValue);
 			weatherManger.addWeatherDelay(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		}
+	}
+	
+	private void writePlaneDataWithAvg(String key, String value, Context context) {
+		String [] stringArr = value.split(",");
+		int numMinutes = Integer.parseInt(stringArr[0]);
+		int numDelays = Integer.parseInt(stringArr[1]);
+		double avgDelay = (double) numMinutes / numDelays;
+		String finalValOld = String.format("Number of Delays: %d, Average Delay: %.2f", numDelays, avgDelay);
+		writeFinalToContext(new Text(key), new Text(finalValOld), context, "PlaneDelays");
 	}
 	
 	private void writeFinalToContext(Text key, Text value, Context context, String namedOutput) {
@@ -83,15 +92,6 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			key.set(entry.getKey());
 			value.set(entry.getValue());
 			writeFinalToContext(key, value, context, "CarrierDelays");
-		}
-		// Write out old and new plane data
-		Text oldData = planeManager.oldPlaneData();
-		if (oldData != null) {
-			writeFinalToContext(new Text("Old Planes"), oldData, context, "PlaneDelays");
-		}
-		Text newData = planeManager.newPlaneData();
-		if (newData != null) {
-			writeFinalToContext(new Text("New Planes"), newData, context, "PlaneDelays");
 		}
 		// Write out weather data
 		LinkedHashMap<Text, Text>  cityWeatherData = weatherManger.returnWritableValues();

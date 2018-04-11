@@ -43,4 +43,26 @@ public class PlaneManager {
 		return retList;
 	}
 	
+	public Text oldPlaneData() {
+		// Old planes
+		String [] oldArr = oldPlaneData.split(",");
+		int numDelaysOld = Integer.parseInt(oldArr[1]);
+		int numMinutesOld  = Integer.parseInt(oldArr[0]);
+		double avgDelayOld = (double) numMinutesOld / numDelaysOld;
+		String finalValOld = String.format("Number of Delays: %d, Number Minutes Delayed: %d,  Average Delay: %.2f", 
+				numDelaysOld, numMinutesOld, avgDelayOld);
+		return new Text(finalValOld);
+	}
+	
+	public Text newPlaneData() {
+		// New planes
+		String [] newArr = newPlaneData.split(",");
+		int numDelaysNew = Integer.parseInt(newArr[1]);
+		int numMinutesNew  = Integer.parseInt(newArr[0]);
+		double avgDelayNew = (double) numMinutesNew / numDelaysNew;
+		String finalValNew = String.format("Number of Delays: %d, Number Minutes Delayed: %d, Average Delay: %.2f", 
+				numDelaysNew, numMinutesNew, avgDelayNew);
+		return new Text (finalValNew);
+	}
+	
 }

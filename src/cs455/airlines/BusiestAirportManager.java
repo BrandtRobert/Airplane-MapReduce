@@ -41,7 +41,8 @@ public class BusiestAirportManager {
 		List<CityYearCountTriple> returnList = new ArrayList<CityYearCountTriple>(10 * 22);
 		// Each map is another year, subsequently
 		int year = 1987;
-		for (TreeMap<MutableInt, String> map : topTenMaps) {
+		for (int i = 0; i < 23; i++) {
+			TreeMap<MutableInt, String> map = topTenMaps[i];
 			for (MutableInt key : map.descendingKeySet()) {
 				CityYearCountTriple c = new CityYearCountTriple();
 				c.city = map.get(key);

@@ -76,8 +76,10 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 		}
 		// Write out old and new plane data
 		List<Text> planeData =  planeManager.returnWritableDataSet();
-		writeFinalToContext(new Text("Old Planes"), planeData.get(0), context, "PlaneDelays");
-		writeFinalToContext(new Text("New Planes"), planeData.get(1), context, "PlaneDelays");
+		if (planeData != null) {
+			writeFinalToContext(new Text("Old Planes"), planeData.get(0), context, "PlaneDelays");
+			writeFinalToContext(new Text("New Planes"), planeData.get(1), context, "PlaneDelays");
+		}
 		// Write out weather data
 		LinkedHashMap<Text, Text>  cityWeatherData = weatherManger.returnWritableValues();
 		for (Entry<Text, Text> entry : cityWeatherData.entrySet()) {

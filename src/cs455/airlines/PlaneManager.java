@@ -19,6 +19,9 @@ public class PlaneManager {
 	
 	// return (double) minutes / (double) numdelays;
 	public List<Text> returnWritableDataSet() {
+		if (oldPlaneData == null || newPlaneData == null) {
+			return null;
+		}
 		List<Text> retList = new ArrayList<Text>(2);
 		// Old planes
 		String [] oldArr = oldPlaneData.split(",");

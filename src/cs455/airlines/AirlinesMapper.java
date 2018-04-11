@@ -115,11 +115,13 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 			int yearInt = Integer.parseInt(year);
 			int aircraftAge = yearInt - manuYearInt;
 			int deptDelay = deptTimeInt - deptTimeSchdInt;
-			if (deptDelay != 0) {
+			int arrDelay = arrTimeInt - arrTimeSchdInt;
+			int totalDelay = deptDelay + arrDelay;
+			if (totalDelay != 0) {
 				if (aircraftAge > 20) {
-					context.write(new Text("5:Old"), new Text(deptDelay + "," + delayed));
+					context.write(new Text("5:Old"), new Text(totalDelay + "," + delayed));
 				} else {
-					context.write(new Text("5:New"), new Text(deptDelay + "," + delayed));
+					context.write(new Text("5:New"), new Text(totalDelay + "," + delayed));
 				}
 			}
 		}

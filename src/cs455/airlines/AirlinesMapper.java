@@ -114,10 +114,13 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 			int manuYearInt = Integer.parseInt(manufactureYear);
 			int yearInt = Integer.parseInt(year);
 			int aircraftAge = yearInt - manuYearInt;
-			if (aircraftAge > 20) {
-				context.write(new Text("5:Old"), new Text(maxDelay + "," + delayed));
-			} else {
-				context.write(new Text("5:New"), new Text(maxDelay + "," + delayed));
+			int deptDelay = deptTimeInt - deptTimeSchdInt;
+			if (deptDelay != 0) {
+				if (aircraftAge > 20) {
+					context.write(new Text("5:Old"), new Text(deptDelay + "," + delayed));
+				} else {
+					context.write(new Text("5:New"), new Text(deptDelay + "," + delayed));
+				}
 			}
 		}
 		// Q6 which cities have the most weather delays?

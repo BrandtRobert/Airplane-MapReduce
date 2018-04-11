@@ -6,7 +6,7 @@ public class MutableInt implements Comparable<MutableInt> {
 	private final int uuid;
 	
 	public MutableInt(int value) {
-		this.value = 0;
+		this.value = value;
 		uuid = idCount;
 		idCount++;
 	}

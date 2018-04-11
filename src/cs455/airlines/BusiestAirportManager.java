@@ -21,23 +21,24 @@ public class BusiestAirportManager {
 	
 	// Sorts the map into a list of top ten busiest airports by year
 	// Uses the natural behavior of treemaps key sorting to achieve this
+	@SuppressWarnings("unchecked")
 	public List<CityYearCountTriple> getTopTenByYear() {
 		// Each index in the list represents a year, while the maps are sorted by counts, with string being the city
-		List<TreeMap<MutableInt, String>> topTenMaps = new ArrayList<TreeMap<MutableInt, String>>(20);
+		TreeMap<MutableInt, String> [] topTenMaps = (TreeMap<MutableInt, String>[]) new TreeMap[22];
 		for (Entry<String, MutableInt> entry : cityYearToCount.entrySet()) {
 			String [] keyArr = entry.getKey().split("-");
 			String year = keyArr[0];
 			String city = keyArr[1];
 			int index = yearToIndex(year);
-			TreeMap<MutableInt, String> yearlyMap = topTenMaps.get(index);
+			TreeMap<MutableInt, String> yearlyMap = topTenMaps[index];
 			yearlyMap.put(entry.getValue(), city);
 			// Remove the 11th entry to get back to top ten, mostly for saving memory
 			if (yearlyMap.size() == 11) {
 				yearlyMap.remove(yearlyMap.firstKey());
 			}
 		}
-		// Top 10 for 21 years
-		List<CityYearCountTriple> returnList = new ArrayList<CityYearCountTriple>(10 * 21);
+		// Top 10 for 22 years
+		List<CityYearCountTriple> returnList = new ArrayList<CityYearCountTriple>(10 * 22);
 		// Each map is another year, subsequently
 		int year = 1987;
 		for (TreeMap<MutableInt, String> map : topTenMaps) {

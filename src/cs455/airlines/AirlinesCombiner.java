@@ -10,15 +10,15 @@ public class AirlinesCombiner extends Reducer<Text, Text, Text, Text> {
 		String keyType = key.toString().split(":")[0];
 		Text combinedVal = null;
 		switch (keyType) {
-		case "M1:":
-		case "W1:":
-		case "D1:":
-		case "3:":
-		case "6:":
+		case "M1":
+		case "W1":
+		case "D1":
+		case "3":
+		case "6":
 			combinedVal = sumIterableValues(key, values);
 			break;
-		case "4:":
-		case "5:":
+		case "4":
+		case "5":
 			combinedVal = countValuesWithNumberEntries(key, values);
 			break;
 		default:

@@ -40,21 +40,21 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 		String keyID = keyArr[0];
 		Text keyTrimmed = new Text(keyArr[1]);
 		switch (keyID) {
-		case "M1:":
-		case "W1:":
-		case "D1:":
+		case "M1":
+		case "W1":
+		case "D1":
 			writeFinalToContext(keyTrimmed, combinedValue, context, "GeneralDelays");
 			break;
-		case "3:":
+		case "3":
 			busiestAirports.addNewAirportRecord(keyTrimmed.toString(), combinedValue.toString());
 			break;
-		case "4:":
+		case "4":
 			carrierManager.addNewCarrier(keyTrimmed.toString(), combinedValue.toString());
 			break;
-		case "5:":
+		case "5":
 			planeManager.addPlaneData(keyTrimmed.toString(), combinedValue.toString());
 			break;
-		case "6:":
+		case "6":
 			weatherManger.addWeatherDelay(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		}

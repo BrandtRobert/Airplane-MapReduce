@@ -126,7 +126,9 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 			String cityOrg = airportToCity.get(originAirport);
 			String cityDest = airportToCity.get(destAirport);
 			context.write(new Text("6:"), new Text(cityOrg));
-			context.write(new Text("6:"), new Text(cityDest));
+			if (cityDest != null) {
+				context.write(new Text("6:"), new Text(cityDest));
+			}
 		}
 	}
 	

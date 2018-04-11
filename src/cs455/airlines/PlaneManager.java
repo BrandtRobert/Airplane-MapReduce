@@ -28,13 +28,15 @@ public class PlaneManager {
 		int numDelaysOld = Integer.parseInt(oldArr[0]);
 		int numMinutesOld  = Integer.parseInt(oldArr[1]);
 		double avgDelayOld = (double) numMinutesOld / numDelaysOld;
-		String finalValOld = String.format("Number of Delays: %d, Average Delay: %.2f", numDelaysOld, avgDelayOld);
+		String finalValOld = String.format("Number of Delays: %d, Number Minutes Delayed: %d,  Average Delay: %.2f", 
+				numDelaysOld, numMinutesOld, avgDelayOld);
 		// New planes
 		String [] newArr = newPlaneData.split(",");
 		int numDelaysNew = Integer.parseInt(newArr[0]);
 		int numMinutesNew  = Integer.parseInt(newArr[1]);
 		double avgDelayNew = (double) numMinutesNew / numDelaysNew;
-		String finalValNew = String.format("Number of Delays: %d, Average Delay: %.2f", numDelaysNew, avgDelayNew);
+		String finalValNew = String.format("Number of Delays: %d, Number Minutes Delayed: %d, Average Delay: %.2f", 
+				numDelaysNew, numMinutesNew, avgDelayNew);
 		// Build list
 		retList.add(new Text(finalValOld));
 		retList.add(new Text(finalValNew));

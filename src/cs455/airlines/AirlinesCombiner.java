@@ -54,13 +54,13 @@ public class AirlinesCombiner extends Reducer<Text, Text, Text, Text> {
 		int sumDelays = 0;
 		int countEntries = 0;
 		for (Text val : value) {
-			String toStr = val.toString();
-			int valueParsed = Integer.parseInt(toStr);
+			String [] strArr = val.toString().split(",");
+			String delayStr = strArr[0];
+			String countStr = strArr[1];
+			int valueParsed = Integer.parseInt(delayStr);
+			int countParsed = Integer.parseInt(countStr);
 			sumDelays += valueParsed;
-			// Don't count 0 minutes delays
-			if (valueParsed > 0) {
-				countEntries++;
-			}
+			countEntries += countParsed;
 		}
 		return new Text(sumDelays + "," + countEntries);
 	}

@@ -14,6 +14,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.test.GenericTestUtils.DelayAnswer;
 
 public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -104,20 +105,20 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 		String carrierCode = lineSplits[8];
 		String carrierFull = carrierToName.get(carrierCode);
 		String carrierDelay = lineSplits[24];
-		if (!carrierDelay.equals("NA")) {
-			context.write(new Text("4:" + carrierFull), new Text(carrierDelay));
+		if (!carrierDelay.equals("NA") && !carrierDelay.equals("0")) {
+			context.write(new Text("4:" + carrierFull), new Text(carrierDelay + ",1"));
 		}
 		// Q5 do older planes cause more delays?
 		String tailNum = lineSplits[10];
 		String manufactureYear = (tailNumToYear.containsKey(tailNum)) ? tailNumToYear.get(tailNum) : "NA";
-		if (!manufactureYear.equals("NA") && !manufactureYear.equals("None")) {
+		if (!manufactureYear.equals("NA") && !manufactureYear.equals("None") && !delayed.equals("0")) {
 			int manuYearInt = Integer.parseInt(manufactureYear);
 			int yearInt = Integer.parseInt(year);
 			int aircraftAge = yearInt - manuYearInt;
 			if (aircraftAge > 20) {
-				context.write(new Text("5:Old"), new Text(maxDelay + ""));
+				context.write(new Text("5:Old"), new Text(maxDelay + "," + delayed));
 			} else {
-				context.write(new Text("5:New"), new Text(maxDelay + ""));
+				context.write(new Text("5:New"), new Text(maxDelay + "," + delayed));
 			}
 		}
 		// Q6 which cities have the most weather delays?

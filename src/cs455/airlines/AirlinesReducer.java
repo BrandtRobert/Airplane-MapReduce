@@ -26,6 +26,9 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 	public void reduce(Text key, Iterable<Text> values, Context context) {
 		Text combinedValue = combiner.combineValues(key, values);
 		String [] keyArr = key.toString().split(":");
+		if (keyArr.length != 2) {
+			return;
+		}
 		String keyID = keyArr[0];
 		Text keyTrimmed = new Text(keyArr[1]);
 		switch (keyID) {

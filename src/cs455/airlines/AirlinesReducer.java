@@ -15,7 +15,6 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 	AirlinesCombiner combiner = new AirlinesCombiner();
 	BusiestAirportManager busiestAirports = new BusiestAirportManager();
 	CarrierManager carrierManager = new CarrierManager();
-	PlaneManager planeManager = new PlaneManager();
 	WeatherManager weatherManger = new  WeatherManager();
 	MultipleOutputs<Text, Text> mos;
 	

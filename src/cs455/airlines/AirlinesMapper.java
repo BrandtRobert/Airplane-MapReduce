@@ -110,7 +110,7 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 		// Q5 do older planes cause more delays?
 		String tailNum = lineSplits[10];
 		String manufactureYear = (tailNumToYear.containsKey(tailNum)) ? tailNumToYear.get(tailNum) : "NA";
-		if (!manufactureYear.equals("NA") || !manufactureYear.equals("None")) {
+		if (!manufactureYear.equals("NA") && !manufactureYear.equals("None")) {
 			int manuYearInt = Integer.parseInt(manufactureYear);
 			int yearInt = Integer.parseInt(year);
 			int aircraftAge = yearInt - manuYearInt;

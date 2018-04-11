@@ -70,7 +70,7 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 		String year = lineSplits[0];
 		String month = lineSplits[1];
 		String dayOfWeek = lineSplits[3];
-		String deptTime = lineSplits[4];
+		String deptTimeSchd = lineSplits[5];
 		// Calculate timeOfDay
 		String timeOfDay = String.format("T-%04d", Integer.parseInt(lineSplits[5]));
 		// Only use the hour
@@ -80,13 +80,14 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 			timeOfDay = "T-00";
 		}
 		// Calculate general delay
-		int deptTimeInt = Integer.parseInt(deptTime);
-		int deptTimeSchd = (isAvailable(lineSplits[5])) ? Integer.parseInt(lineSplits[5]) : deptTimeInt;
-		int arrTimeInt = Integer.parseInt(lineSplits[6]);
-		int arrTimeSchd = (isAvailable(lineSplits[7])) ? Integer.parseInt(lineSplits[7]) : arrTimeInt;
+		int deptTimeSchdInt = Integer.parseInt(deptTimeSchd);
+		int deptTimeInt = (isAvailable(lineSplits[4])) ? Integer.parseInt(lineSplits[4]) : deptTimeSchdInt;
+		int arrTimeSchdInt = Integer.parseInt(lineSplits[7]);
+		int arrTimeInt = (isAvailable(lineSplits[6])) ? Integer.parseInt(lineSplits[6]) : arrTimeSchdInt;
+		
 		String delayed = "0";
 		// If both are 0, will be 0
-		int maxDelay = Math.max((deptTimeInt - deptTimeSchd), (arrTimeInt - arrTimeSchd));
+		int maxDelay = Math.max((deptTimeInt - deptTimeSchdInt), (arrTimeInt - arrTimeSchdInt));
 		if (maxDelay > 0) {
 			delayed = "1";
 		}
@@ -109,7 +110,7 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 		// Q5 do older planes cause more delays?
 		String tailNum = lineSplits[10];
 		String manufactureYear = (tailNumToYear.containsKey(tailNum)) ? tailNumToYear.get(tailNum) : "NA";
-		if (!manufactureYear.equals("NA")) {
+		if (!manufactureYear.equals("NA") || !manufactureYear.equals("None")) {
 			int manuYearInt = Integer.parseInt(manufactureYear);
 			int yearInt = Integer.parseInt(year);
 			int aircraftAge = yearInt - manuYearInt;

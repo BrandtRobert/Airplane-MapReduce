@@ -1,6 +1,6 @@
 #!/bin/bash
 # cs455/hadoop/mapreduce/busiestairports/BusiestAirportsJob.class
 hadoop jar ./dist/airportanalysis.jar \
-cs455.hadoop.mapreduce.delays.DelaysJob \
+cs455.airlines.AirlinesJob \
 /data/main/ \
-/home/cs455/delays/$1
+/home/cs455/refactor/$1

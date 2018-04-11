@@ -3,4 +3,4 @@
 hadoop jar ./dist/airportanalysis.jar \
 cs455.airlines.AirlinesJob \
 /data/main/ \
-/home/cs455/refactor/$1
+/home/final/delays/$1

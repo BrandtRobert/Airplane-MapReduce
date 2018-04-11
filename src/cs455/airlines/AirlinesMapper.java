@@ -126,9 +126,9 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 		if (!weatherDelay.equals("NA")) {
 			String cityOrg = airportToCity.get(originAirport);
 			String cityDest = airportToCity.get(destAirport);
-			context.write(new Text("6:"), new Text(cityOrg));
+			context.write(new Text("6:" + cityOrg), new Text("1"));
 			if (cityDest != null) {
-				context.write(new Text("6:"), new Text(cityDest));
+				context.write(new Text("6:" + cityDest), new Text("1"));
 			}
 		}
 	}

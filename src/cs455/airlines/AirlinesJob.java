@@ -28,7 +28,7 @@ public class AirlinesJob {
 			job.setNumReduceTasks(7);
 			job.setPartitionerClass(AirlinesPartitioner.class);
 			// Combiner
-			job.setCombinerClass(AirlinesCombiner.class);
+			job.setCombinerClass(CombineDispatcher.class);
             // path to input in HDFS
             FileInputFormat.addInputPath(job, new Path(args[0]));
             // path to output in HDFS

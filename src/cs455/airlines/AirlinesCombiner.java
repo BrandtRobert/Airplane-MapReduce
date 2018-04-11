@@ -21,6 +21,8 @@ public class AirlinesCombiner extends Reducer<Text, Text, Text, Text> {
 		case "5:":
 			combinedVal = countValuesWithNumberEntries(key, values);
 			break;
+		default:
+			combinedVal = new Text("Null Value : " + keyType);
 		}
 		return combinedVal;
 	}

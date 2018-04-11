@@ -33,7 +33,6 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 		Text keyTrimmed = new Text(keyArr[1]);
 		switch (keyID) {
 		case "M1":
-			context.write(keyTrimmed, combinedValue);
 		case "W1":
 		case "D1":
 			writeFinalToContext(keyTrimmed, combinedValue, context, "GeneralDelays");
@@ -49,6 +48,7 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			planeManager.addPlaneData(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		case "6":
+			context.write(keyTrimmed, combinedValue);
 			weatherManger.addWeatherDelay(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		}

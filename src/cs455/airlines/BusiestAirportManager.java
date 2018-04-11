@@ -10,13 +10,8 @@ public class BusiestAirportManager {
 	private HashMap<String, MutableInt> cityYearToCount = new HashMap<String, MutableInt>();
 	
 	public void addNewAirportRecord(String key, String count) {
-		int countInt = Integer.parseInt(count);
-		MutableInt value = cityYearToCount.get(key);
-		if (value == null) {
-			cityYearToCount.put(key, new MutableInt(countInt));
-		} else {
-			value.incrementBy(countInt);
-		}
+		MutableInt val = new MutableInt(Integer.parseInt(count));
+		cityYearToCount.put(key, val);
 	}
 	
 	// Sorts the map into a list of top ten busiest airports by year

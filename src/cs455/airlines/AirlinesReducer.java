@@ -23,7 +23,7 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 		mos = new MultipleOutputs<Text, Text>(context);
 	}
 	
-	public void reduce(Text key, Iterable<Text> values, Context context) {
+	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 		Text combinedValue = combiner.combineValues(key, values);
 		String [] keyArr = key.toString().split(":");
 		if (keyArr.length != 2) {
@@ -38,6 +38,7 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			writeFinalToContext(keyTrimmed, combinedValue, context, "GeneralDelays");
 			break;
 		case "3":
+			context.write(keyTrimmed, combinedValue);
 			busiestAirports.addNewAirportRecord(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		case "4":

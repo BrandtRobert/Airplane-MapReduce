@@ -24,15 +24,15 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 	}
 	
 	public void reduce(Text key, Iterable<Text> values, Context context) {
-		for (Text val: values) {
-			try {
-				context.write(key, val);
-			} catch (IOException | InterruptedException e) {
-				e.printStackTrace();
-			}
+		Text combinedValue = combiner.combineValues(key, values);
+		try {
+			context.write(key, combinedValue);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		/**
-		Text combinedValue = combiner.combineValues(key, values);
 		String [] keyArr = key.toString().split(":");
 		if (keyArr.length != 2) {
 			return;

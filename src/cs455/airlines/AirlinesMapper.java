@@ -87,7 +87,7 @@ public class AirlinesMapper extends Mapper<LongWritable, Text, Text, Text> {
 		
 		String delayed = "0";
 		// If both are 0, will be 0
-		int maxDelay = Math.max((deptTimeInt - deptTimeSchdInt), (arrTimeInt - arrTimeSchdInt));
+		int maxDelay = Math.max(Math.max((deptTimeInt - deptTimeSchdInt), (arrTimeInt - arrTimeSchdInt)), 0);
 		if (maxDelay > 0) {
 			delayed = "1";
 		}

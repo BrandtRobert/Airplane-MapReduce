@@ -24,6 +24,14 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 	}
 	
 	public void reduce(Text key, Iterable<Text> values, Context context) {
+		for (Text val: values) {
+			try {
+				context.write(key, val);
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		/**
 		Text combinedValue = combiner.combineValues(key, values);
 		String [] keyArr = key.toString().split(":");
 		if (keyArr.length != 2) {
@@ -50,6 +58,7 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			weatherManger.addWeatherDelay(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		}
+		*/
 	}
 	
 	private void writeFinalToContext(Text key, Text value, Context context, String namedOutput) {
@@ -60,6 +69,7 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 		}
 	}
 	
+	/**
 	public void cleanup(Context context) {
 		Text key = new Text();
 		Text value = new Text();
@@ -89,4 +99,5 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			writeFinalToContext(entry.getKey(), entry.getValue(), context, "WeatherDelays");
 		}
 	}
+	*/
 }

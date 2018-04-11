@@ -41,14 +41,13 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			busiestAirports.addNewAirportRecord(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		case "4":
-			context.write(keyTrimmed, combinedValue);
 			carrierManager.addNewCarrier(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		case "5":
+			context.write(keyTrimmed, combinedValue);
 			planeManager.addPlaneData(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		case "6":
-			context.write(keyTrimmed, combinedValue);
 			weatherManger.addWeatherDelay(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		}

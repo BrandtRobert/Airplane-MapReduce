@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.hadoop.io.Text;
 
 public class PlaneManager {
-	String oldPlaneData;
-	String newPlaneData;
+	String oldPlaneData = "0";
+	String newPlaneData = "0";
 	
 	public void addPlaneData(String key, String value) {
 		if (key.equals("Old")) {

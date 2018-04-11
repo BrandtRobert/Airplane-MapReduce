@@ -38,10 +38,10 @@ public class AirlinesReducer extends Reducer<Text, Text, Text, Text> {
 			writeFinalToContext(keyTrimmed, combinedValue, context, "GeneralDelays");
 			break;
 		case "3":
-			context.write(keyTrimmed, combinedValue);
 			busiestAirports.addNewAirportRecord(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		case "4":
+			context.write(keyTrimmed, combinedValue);
 			carrierManager.addNewCarrier(keyTrimmed.toString(), combinedValue.toString());
 			break;
 		case "5":

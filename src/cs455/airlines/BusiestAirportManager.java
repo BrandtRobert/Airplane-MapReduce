@@ -48,13 +48,6 @@ public class BusiestAirportManager {
 			}
 			year++;
 		}
-//		List<CityYearCountTriple> returnList = new ArrayList<CityYearCountTriple>();
-//		for (Entry<String, MutableInt> entry : cityYearToCount.entrySet()) {
-//			CityYearCountTriple c = new CityYearCountTriple();
-//			c.city = entry.getKey();
-//			c.count = entry.getValue().get() + "";
-//			returnList.add(c);
-//		}
 		return returnList;
 	} 
 	

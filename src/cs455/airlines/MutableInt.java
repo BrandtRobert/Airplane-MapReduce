@@ -40,6 +40,9 @@ public class MutableInt implements Comparable<MutableInt> {
 	 * Compared in descending order
 	 */
 	public int compareTo(MutableInt o) {
+		if (this.equals(o)) {
+			return 0;
+		}
 		if (this.get() > o.get()) {
 			return 1;
 		} else {

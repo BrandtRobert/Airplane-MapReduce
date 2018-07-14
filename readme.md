@@ -9,6 +9,7 @@ The project is built with ant, the build.xml is include in the tar. To build the
 ```
 ant
 ```
+*You may have to set the lib.dir property in the build.xml to the location of your hadoop library in order to build the project.*
 
 ## Running Q1 - Q6
 
